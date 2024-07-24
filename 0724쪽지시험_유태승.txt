@@ -1,0 +1,202 @@
+1. int 값
+
+using System.Collections;
+
+namespace _0724Test
+{
+    class MyList : IEnumerable<int>, IEnumerator<int>
+    {
+        private int[] array;
+        int postion = -1;
+
+        public MyList()
+        {
+            array = new int[5];
+        }
+
+        public int this[int id]
+        {
+            get { return array[id]; }
+
+            set
+            {
+                if (id >= array.Length)
+                {
+                    Array.Resize<int>(ref array, id + 1);
+                    Console.WriteLine(array.Length);
+                }
+                array[id] = value;
+            }
+        }
+
+        public int Length
+        {
+            get { return array.Length; }
+        }
+
+        public int Current
+        {
+            get
+            {
+                return array[postion];
+            }
+        }
+        object IEnumerator.Current
+        {
+            get { return array[postion]; }
+        }
+
+        public void Dispose()
+        {
+
+        }
+
+        public IEnumerator<int> GetEnumerator()
+        {
+            return this;
+        }
+
+        public bool MoveNext()
+        {
+            if (postion == array.Length - 1)
+            {
+                Reset();
+                return false;
+            }
+            postion++;
+            return (postion < array.Length);
+        }
+
+        public void Reset()
+        {
+            postion = -1;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this;
+        }
+
+        internal class Program
+        {
+            static void Main(string[] args)
+            {
+                MyList list = new MyList();
+                list[0] = 1;
+                list[1] = 2;
+                list[2] = 3;
+                foreach (int i in list)
+                {
+                    Console.WriteLine(i);
+                }
+            }
+        }
+    }
+}
+
+
+2. 어떤 자료형이라도 받아내는 코드
+
+using System.Collections;
+
+namespace _0724Test
+{
+    class MyList<T> : IEnumerable<T>, IEnumerator<T>
+    {
+        private T[] array;
+        int postion = -1;
+
+        public MyList()
+        {
+            array = new T[5];
+        }
+
+        public T this[int id]
+        {
+            get { return array[id]; }
+
+            set
+            {
+                if (id >= array.Length)
+                {
+                    Array.Resize<T>(ref array, id + 1);
+                    Console.WriteLine(array.Length);
+                }
+                array[id] = value;
+            }
+        }
+
+        public int Length
+        {
+            get { return array.Length; }
+        }
+
+        public T Current
+        {
+            get
+            {
+                return array[postion];
+            }
+        }
+        object IEnumerator.Current
+        {
+            get { return array[postion]; }
+        }
+
+        public void Dispose()
+        {
+
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return this;
+        }
+
+        public bool MoveNext()
+        {
+            if (postion == array.Length - 1)
+            {
+                Reset();
+                return false;
+            }
+            postion++;
+            return (postion < array.Length);
+        }
+
+        public void Reset()
+        {
+            postion = -1;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this;
+        }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            MyList<int> list = new MyList<int>();
+            list[0] = 1;
+            list[1] = 2;
+            list[2] = 3;
+            foreach (int i in list)
+            {
+                Console.WriteLine(i);
+            }
+
+            MyList<double> list2 = new MyList<double>();
+            list2[0] = 1.123213d;
+            list2[1] = 2.123213d;
+            list2[2] = 3.123213d;
+            foreach (double i in list2)
+            {
+                Console.WriteLine(i);
+            }
+        }
+    }
+}
+
+
